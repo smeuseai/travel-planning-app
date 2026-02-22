@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Place } from '../../types';
 import { PlaceCard } from './PlaceCard';
 import { addLike } from '../../services/likesService';
