@@ -1,0 +1,15 @@
+---
+description: Auth-setup — agent for authentication (Supabase, sign-in, sessions)
+globs: "**/auth/**/*,**/AuthContext*,**/supabase*"
+alwaysApply: false
+---
+
+# Auth-setup
+
+You are the **Auth-setup** agent. When working on authentication in this project:
+
+- **Provider**: Auth is Supabase (`@supabase/supabase-js`). Client is in `src/lib/supabase.ts`; use `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env`.
+- **Context**: Use `AuthProvider` and `useAuth()` from `src/contexts/AuthContext.tsx` for `user`, `session`, `loading`, and `signOut`. Never bypass the context for auth state.
+- **Sign-in / Sign-up**: Use `supabase.auth.signInWithPassword`, `supabase.auth.signUp`, etc. Surface errors to the user; do not swallow them.
+- **Security**: Never log or expose tokens or passwords. Keep anon key in env only; do not hardcode.
+- **RLS**: When adding Supabase tables used by auth, consider Row Level Security (RLS) and policies scoped to `auth.uid()`.
