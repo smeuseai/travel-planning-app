@@ -129,11 +129,18 @@ The built files will be in the `dist/` directory, ready to deploy to Vercel, Net
 
 **Note:** The app uses **mock place data** when no backend is configured. To use **real Google Places** data in production, you’d need to add a small API (e.g. Vercel serverless functions) that proxy requests and keep your API key server-side, then set `VITE_API_BASE_URL` to that API’s URL.
 
-### Deploy with Netlify
+### Deploy with Netlify (if Vercel keeps showing "Loading…")
 
-- Connect the same GitHub repo at [netlify.com](https://www.netlify.com).
-- Build command: `npm run build`, Publish directory: `dist`.
-- Add the same env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+If the app on Vercel only shows "Loading Travel Planning App…" and never loads, try **Netlify** with the same repo:
+
+1. **Push your latest code** to GitHub (including `vite.config.ts` with `vite-plugin-singlefile` and `netlify.toml`).
+2. Go to **[app.netlify.com](https://app.netlify.com)** and sign in with GitHub.
+3. **Add new site → Import an existing project** → choose **GitHub** → **smeuseai/travel-planning-app**.
+4. Netlify will read `netlify.toml`: **Build command** `npm run build`, **Publish directory** `dist`. Leave as-is.
+5. **Add environment variables** (Site settings → Environment variables):
+   - `VITE_SUPABASE_URL` = your Supabase project URL  
+   - `VITE_SUPABASE_ANON_KEY` = your Supabase anon key  
+6. Click **Deploy site**. When the build finishes, open the site URL. The app should load (sign-in screen or city selector).
 
 ## License
 
