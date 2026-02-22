@@ -77,6 +77,22 @@ Map Google Places `types[]` array to 3 categories. **Priority order:** Check typ
 
 ---
 
+## 6. Implementation and deployment context (as built)
+
+- **Status:** Feature implemented and deployed. App runs locally (`npm run dev`) and in production (see below).
+- **Repo:** [github.com/smeuseai/travel-planning-app](https://github.com/smeuseai/travel-planning-app).
+- **Stack as built:** React 18, TypeScript, Vite 5, Supabase (Auth + `likes` table with RLS), Swiper. Places: Google Places API via optional Express proxy (dev) or mock data when no API is configured.
+- **Production hosting:** **Netlify** is the recommended and working host. The app is built as a **single HTML file** (all JS/CSS inlined via `vite-plugin-singlefile`) so there are no separate asset requests that can 404.
+  - **Vercel:** Deployment was attempted; built JS/CSS assets often returned 404, causing a stuck "Loading…" screen. Single-file build and Netlify were used to resolve this.
+- **Build:** `npm run build` → `dist/index.html` only (single-file). Config: `vite.config.ts` with `base: './'` and `vite-plugin-singlefile`.
+- **Environment variables (production):** Set in Netlify (or host) **Environment variables**:
+  - **Required for auth and likes:** `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+  - **Optional:** `VITE_API_BASE_URL` — when set, the app calls this base URL for `/api/places` and `/api/place-details` (real Google Places). When unset, the app uses **mock place data**.
+- **Places data in production:** Without a server-side API and `VITE_API_BASE_URL`, the app uses built-in mock places (no Google API key in the browser). To use real Google Places in production, add a server or serverless API that proxies requests and keeps the API key server-side, then set `VITE_API_BASE_URL` to that API’s URL.
+- **Deploy flow:** Push to `main` → Netlify builds and deploys automatically. Ensure `netlify.toml` is present (build command: `npm run build`, publish: `dist`).
+
+---
+
 ## Summary
 
-This PRD defines a Travel Planning App feature for discovering places in a chosen city. Users authenticate via Supabase, select a city, browse places categorized as Hungry, Sight Seeing, or Shopping, with each place tagged as Popular or Under-rated. Users can like/dislike places, and view their saved places per city.
+This PRD defines a Travel Planning App feature for discovering places in a chosen city. Users authenticate via Supabase, select a city, browse places categorized as Hungry, Sight Seeing, or Shopping, with each place tagged as Popular or Under-rated. Users can like/dislike places, and view their saved places per city. **The feature is implemented and deployed** (see Section 6 for build, hosting on Netlify, and environment variables).

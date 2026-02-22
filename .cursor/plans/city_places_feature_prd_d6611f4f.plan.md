@@ -89,6 +89,19 @@ Map Google Places `types[]` array to 3 categories. **Priority order:** Check typ
 
 ---
 
+## 5b. Implementation and deployment context (as built)
+
+- **Status:** Feature implemented and deployed. App runs locally (`npm run dev`) and in production.
+- **Repo:** [github.com/smeuseai/travel-planning-app](https://github.com/smeuseai/travel-planning-app).
+- **Stack as built:** React 18, TypeScript, Vite 5, Supabase (Auth + `likes` table with RLS), Swiper. Places: Google Places API via optional Express proxy (dev) or mock data when no API is configured.
+- **Production hosting:** **Netlify** recommended and working. App is built as a **single HTML file** (JS/CSS inlined via `vite-plugin-singlefile`) to avoid asset 404s. **Vercel** was tried; built assets often 404’d (stuck "Loading…"); single-file build + Netlify resolved this.
+- **Build:** `npm run build` → `dist/index.html` only. Config: `base: './'`, `vite-plugin-singlefile` in `vite.config.ts`.
+- **Env vars (production):** In Netlify/host: **Required:** `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`. **Optional:** `VITE_API_BASE_URL` for real Places API; when unset, app uses mock places.
+- **Places in production:** Without server-side API + `VITE_API_BASE_URL`, app uses mock places. For real Google Places, add a proxy API and set `VITE_API_BASE_URL`.
+- **Deploy:** Push to `main` → Netlify auto-deploys. `netlify.toml`: build `npm run build`, publish `dist`.
+
+---
+
 ## 6. Code Execution — Named Agent Chunks
 
 Each chunk: implement → test → debug in isolation. Hand off via contracts (API shape, file paths, props).

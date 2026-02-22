@@ -140,7 +140,25 @@ If the app on Vercel only shows "Loading Travel Planning App…" and never loads
 5. **Add environment variables** (Site settings → Environment variables):
    - `VITE_SUPABASE_URL` = your Supabase project URL  
    - `VITE_SUPABASE_ANON_KEY` = your Supabase anon key  
-6. Click **Deploy site**. When the build finishes, open the site URL. The app should load (sign-in screen or city selector).
+   - `GOOGLE_PLACES_API_KEY` = your Google Places API key (for real places in production; optional — app uses mock data if unset)  
+6. Click **Deploy site**. When the build finishes, open the site URL. The app should load (sign-in screen or city selector). With `GOOGLE_PLACES_API_KEY` set, the production app will use **real Google Places data** via Netlify Functions (`/api/places`, `/api/place-details`, `/api/place-photo`).
+
+### Supabase configuration for production
+
+After the app is live on Netlify, update Supabase so auth (sign-in, sign-up, password reset, email confirmation) works correctly on the production URL:
+
+1. Open the **[Supabase Dashboard](https://supabase.com/dashboard)** and select your project.
+2. Go to **Authentication** → **URL Configuration**.
+3. **Site URL:** Set to your production app URL, e.g.  
+   `https://your-site-name.netlify.app`  
+   (Replace with your actual Netlify URL. This is used for email confirmation and password reset links.)
+4. **Redirect URLs:** Add your production URL so Supabase allows redirects back to your app. Click **Add URL** and add:
+   - `https://your-site-name.netlify.app`
+   - `https://your-site-name.netlify.app/**`  
+   You can keep `http://localhost:5173` and `http://localhost:5173/**` in the list for local development.
+5. Click **Save**.
+
+No code or database changes are required; the app already uses the env vars set in Netlify.
 
 ## License
 
