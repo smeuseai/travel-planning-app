@@ -105,6 +105,36 @@ npm run build
 
 The built files will be in the `dist/` directory, ready to deploy to Vercel, Netlify, or any static hosting service.
 
+## Deploy to the Web (Vercel)
+
+1. **Push your code** to GitHub (you already have [github.com/smeuseai/travel-planning-app](https://github.com/smeuseai/travel-planning-app)).
+
+2. **Sign in to [Vercel](https://vercel.com)** (free account; you can use “Continue with GitHub”).
+
+3. **Import the project**
+   - Click **Add New… → Project**
+   - Select the **smeuseai/travel-planning-app** repo
+   - Leave **Framework Preset** as Vite (or auto-detected)
+   - **Build Command**: `npm run build`  
+   - **Output Directory**: `dist`
+
+4. **Set environment variables** (required for auth and optional for real places):
+   - In the import screen (or later in **Project → Settings → Environment Variables**), add:
+     - `VITE_SUPABASE_URL` = your Supabase project URL  
+     - `VITE_SUPABASE_ANON_KEY` = your Supabase anon (public) key  
+   - Without these, sign-in and saved likes will not work.
+
+5. **Deploy**
+   - Click **Deploy**. Vercel will build and host the app and give you a URL like `https://travel-planning-app-xxx.vercel.app`.
+
+**Note:** The app uses **mock place data** when no backend is configured. To use **real Google Places** data in production, you’d need to add a small API (e.g. Vercel serverless functions) that proxy requests and keep your API key server-side, then set `VITE_API_BASE_URL` to that API’s URL.
+
+### Deploy with Netlify
+
+- Connect the same GitHub repo at [netlify.com](https://www.netlify.com).
+- Build command: `npm run build`, Publish directory: `dist`.
+- Add the same env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+
 ## License
 
 MIT
